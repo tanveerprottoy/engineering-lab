@@ -1,7 +1,8 @@
-package concurrent
+package main
 
 import "github.com/tanveerprottoy/engineering-lab/concurrent"
 
 func main() {
-	concurrent.RunConcurrentArithmetics()
+	concurrent.RunNumEmitter()
+	// concurrent.RunRoundRobin()
 }
