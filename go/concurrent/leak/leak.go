@@ -34,12 +34,20 @@ func processContextBatch(ctx context.Context, vals []int) []int {
 	return rands
 }
 
+func processChannel(v int) <-chan int {
+	ch := make(chan int)
+	ch <- v + rand.Intn(100)
+	return ch
+}
+
 func processContextSelect(ctx context.Context, v int) int {
 	select {
 	case <-ctx.Done():
 		return 0
-	default:
-		return v + rand.Intn(100)
+	case res := <-processChannel(v):
+		return res
+		// default:
+		// 	return v + rand.Intn(100)
 	}
 }
 
@@ -70,6 +78,7 @@ func workerContext(ctx context.Context, ch <-chan int) {
 			if !ok {
 				return
 			}
+			
 			process(v)
 		}
 	}
